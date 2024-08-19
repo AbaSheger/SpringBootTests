@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.server.ResponseStatusException;
 import se.verran.springbootdemowithtests.entities.Student;
 import se.verran.springbootdemowithtests.repositories.StudentRepository;
 
@@ -184,7 +185,7 @@ class SchoolServiceTest {
 
         // Test case: When studentList is empty, expect a ResponseStatusException.
         when(studentService.getAllStudents()).thenReturn(new ArrayList<>());
-        assertThrows(RuntimeException.class, () -> schoolService.getTopScoringStudents());
+        assertThrows(ResponseStatusException.class, () -> schoolService.getTopScoringStudents());
 
         // Test case: studentList.size() == 1
         List<Student> oneStudentList = new ArrayList<>();
@@ -205,9 +206,5 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(threeStudentsList);
         result = schoolService.getTopScoringStudents();
         assertEquals(1, result.size());
-
-
-
-
     }
 }
