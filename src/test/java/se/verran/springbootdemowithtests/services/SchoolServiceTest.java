@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 class SchoolServiceTest {
@@ -36,6 +35,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(new ArrayList<>());
         String result = schoolService.numberOfStudentsPerGroupWhenDivideIntoNumberOfGroups(1);
         assertEquals("There should be at least two groups", result);
+        verify(studentService, times(1)).getAllStudents();
 
         // Test case: numberOfStudents < numberOfGroups
         List<Student> oneStudentList = new ArrayList<>();
@@ -43,6 +43,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(oneStudentList);
         result = schoolService.numberOfStudentsPerGroupWhenDivideIntoNumberOfGroups(2);
         assertEquals("Not able to divide 1 students into 2 groups", result);
+        verify(studentService, times(2)).getAllStudents();
 
         // Test case: numberOfStudents / numberOfGroups < 2
         List<Student> twoStudentsList = new ArrayList<>();
@@ -52,6 +53,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(twoStudentsList);
         result = schoolService.numberOfStudentsPerGroupWhenDivideIntoNumberOfGroups(2);
         assertEquals("Not able to manage 2 groups with 2 students", result);
+        verify(studentService, times(3)).getAllStudents();
 
         // Test case: remainder == 0
         List<Student> tenStudentsList = new ArrayList<>();
@@ -70,6 +72,8 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(elevenStudentsList);
         result = schoolService.numberOfStudentsPerGroupWhenDivideIntoNumberOfGroups(2);
         assertEquals("2 groups could be formed with 5 students per group, but that would leave 1 student hanging", result);
+        verify(studentService, times(5)).getAllStudents();
+
 
         // Test case: reminder == 1 (for singular condition)
         List<Student> nineStudentsList = new ArrayList<>();
@@ -79,6 +83,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(nineStudentsList);
         result = schoolService.numberOfStudentsPerGroupWhenDivideIntoNumberOfGroups(4);
         assertEquals("4 groups could be formed with 2 students per group, but that would leave 1 student hanging", result);
+        verify(studentService, times(6)).getAllStudents();
 
         // Test case: remainder > 1 (for plural condition)
         List<Student> fourteenStudentsList = new ArrayList<>();
@@ -88,6 +93,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(fourteenStudentsList);
         result = schoolService.numberOfStudentsPerGroupWhenDivideIntoNumberOfGroups(5);
         assertEquals("5 groups could be formed with 2 students per group, but that would leave 4 students hanging", result);
+        verify(studentService, times(7)).getAllStudents();
     }
 
 
@@ -98,6 +104,8 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(new ArrayList<>());
         String result = schoolService.numberOfGroupsWhenDividedIntoGroupsOf(1);
         assertEquals("Size of group should be at least 2", result);
+        verify(studentService, times (1)).getAllStudents();
+
 
         // Test case: numberOfStudents < studentsPerGroup
         List<Student> oneStudentList = new ArrayList<>();
@@ -105,6 +113,8 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(oneStudentList);
         result = schoolService.numberOfGroupsWhenDividedIntoGroupsOf(3);
         assertEquals("Not able to manage groups of 3 with only 1 students", result);
+        verify (studentService, times(2)).getAllStudents();
+
 
         // Test case: numberOfStudents / studentsPerGroup < 2
         List<Student> threeStudentsList = new ArrayList<>();
@@ -114,6 +124,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(threeStudentsList);
         result = schoolService.numberOfGroupsWhenDividedIntoGroupsOf(2);
         assertEquals("Not able to manage groups of 2 with only 3 students", result);
+        verify(studentService, times(3)).getAllStudents();
 
         // Test case: remainder == 0
         List<Student> tenStudentsList = new ArrayList<>();
@@ -123,6 +134,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(tenStudentsList);
         result = schoolService.numberOfGroupsWhenDividedIntoGroupsOf(2);
         assertEquals("2 students per group is possible, there will be 5 groups", result);
+        verify(studentService, times(4)).getAllStudents();
 
         // Test case: remainder == 1
         List<Student> elevenStudentsList = new ArrayList<>();
@@ -132,6 +144,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(elevenStudentsList);
         result = schoolService.numberOfGroupsWhenDividedIntoGroupsOf(2);
         assertEquals("2 students per group is possible, there will be 5 groups, there will be 1 student hanging", result);
+        verify(studentService, times(5)).getAllStudents();
 
         // Test case: remainder > 1
         List<Student> fourteenStudentsList = new ArrayList<>();
@@ -141,6 +154,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(fourteenStudentsList);
         result = schoolService.numberOfGroupsWhenDividedIntoGroupsOf(3);
         assertEquals("3 students per group is possible, there will be 4 groups, there will be 2 students hanging", result);
+        verify(studentService, times(6)).getAllStudents();
     }
 
 
@@ -150,6 +164,7 @@ class SchoolServiceTest {
         // Test case: studentList.isEmpty()
         when(studentService.getAllStudents()).thenReturn(new ArrayList<>());
         assertThrows(RuntimeException.class, () -> schoolService.calculateAverageGrade());
+        verify(studentService, times(1)).getAllStudents();
 
         // Test case: studentList.size() == 1
         List<Student> oneStudentList = new ArrayList<>();
@@ -159,6 +174,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(oneStudentList);
         String result = schoolService.calculateAverageGrade();
         assertEquals("Average grade is 3.0", result);
+        verify(studentService, times(2)).getAllStudents();
 
         // Test case: studentList.size() > 1
         List<Student> threeStudentsList = new ArrayList<>();
@@ -170,6 +186,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(threeStudentsList);
         result = schoolService.calculateAverageGrade();
         assertEquals("Average grade is 3.0", result);
+        verify(studentService, times(3)).getAllStudents();
 
 
     }
@@ -180,6 +197,7 @@ class SchoolServiceTest {
         // Test case: When studentList is empty, expect a ResponseStatusException.
         when(studentService.getAllStudents()).thenReturn(new ArrayList<>());
         assertThrows(ResponseStatusException.class, () -> schoolService.getTopScoringStudents());
+        verify(studentService, times(1)).getAllStudents();
 
         // Test case: studentList.size() == 1
         List<Student> oneStudentList = new ArrayList<>();
@@ -189,6 +207,7 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(oneStudentList);
         List<Student> result = schoolService.getTopScoringStudents();
         assertEquals(1, result.size());
+        verify(studentService, times(2)).getAllStudents();
 
         // Test case: studentList.size() > 1
         List<Student> threeStudentsList = new ArrayList<>();
@@ -200,5 +219,6 @@ class SchoolServiceTest {
         when(studentService.getAllStudents()).thenReturn(threeStudentsList);
         result = schoolService.getTopScoringStudents();
         assertEquals(1, result.size());
+        verify(studentService, times(3)).getAllStudents();
     }
 }
