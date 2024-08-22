@@ -2,7 +2,6 @@ package se.verran.springbootdemowithtests.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import se.verran.springbootdemowithtests.entities.Student;
 import se.verran.springbootdemowithtests.repositories.StudentRepository;
